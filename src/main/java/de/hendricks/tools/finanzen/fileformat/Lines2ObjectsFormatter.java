@@ -1,4 +1,4 @@
-package de.hendricks.tools.finanzen;
+package de.hendricks.tools.finanzen.fileformat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,25 +12,26 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
-public class StringHelper {
+import de.hendricks.tools.finanzen.Payment;
+
+public class Lines2ObjectsFormatter {
 
 	static Hashtable<String, BigDecimal> sums = new Hashtable<String, BigDecimal>();
 	static String filter = System.getProperty("filter");
 	static SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
-	public static ArrayList<Object[]> readCsv(String s, Metadata metadata) throws IOException {
+	public static ArrayList<Object[]> readAllLines(String s, Metadata metadata) throws IOException {
 		ArrayList<Object[]> myList = new ArrayList<Object[]>();
 		BufferedReader br = new BufferedReader(new StringReader(s));
 		String line = null;
 		while ((line = br.readLine()) != null) {
 			String account = line.substring(0, 10);
 			String date = line.substring(10, 20);
-			String year = line.substring(16, 20);
 			String amount = line.substring(45, 57);
-			String vz = line.substring(57, 58);
-			if ("R".equals(vz)) {
+			String plusOrMinus = line.substring(57, 58);
+			if ("R".equals(plusOrMinus)) {
 				// bei sparkassen-Umsätzen aus älterer Zeit komischerweise
-				vz = line.substring(58, 59);
+				plusOrMinus = line.substring(58, 59);
 			}
 			String type = line.substring(82, 109);
 			String toBank = line.substring(119, 127);
@@ -52,7 +53,7 @@ public class StringHelper {
 			payment.setAccount(account);
 			payment.setDate(date);
 			payment.setAmount(amount);
-			payment.setVz(vz);
+			payment.setPlusOrMinus(plusOrMinus);
 			payment.setType(type);
 			payment.setToBank(toBank);
 			payment.setToAccount(toAccount);
@@ -75,9 +76,9 @@ public class StringHelper {
 				}
 				BigDecimal amountBd = new BigDecimal(0);
 				try {
-					amountBd = new BigDecimal(subPayment.getVz() + subPayment.getAmount());
+					amountBd = new BigDecimal(subPayment.getPlusOrMinus() + subPayment.getAmount());
 				} catch (Throwable e) {
-					System.out.println("Could not convert to BigDecimal:" + subPayment.getVz() + subPayment.getAmount()
+					System.out.println("Could not convert to BigDecimal:" + subPayment.getPlusOrMinus() + subPayment.getAmount()
 							+ " in line " + line);
 					e.printStackTrace();
 				}

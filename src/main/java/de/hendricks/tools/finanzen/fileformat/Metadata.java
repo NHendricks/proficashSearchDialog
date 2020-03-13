@@ -1,10 +1,13 @@
-package de.hendricks.tools.finanzen;
+package de.hendricks.tools.finanzen.fileformat;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import de.hendricks.tools.helper.FileHelper;
 
@@ -21,7 +24,7 @@ public class Metadata {
 	public Metadata(File file) {
 		File criteriaFile = new File(file.getAbsolutePath() + ".criteria");
 		try {
-			String s = FileHelper.readFile(criteriaFile, false, false);
+			String s = FileHelper.getAllLines(criteriaFile).stream().collect(Collectors.joining("\n"));
 			BufferedReader br = new BufferedReader(new StringReader(s));
 			String line = null;
 			while ((line = br.readLine()) != null) {
@@ -59,13 +62,13 @@ public class Metadata {
 	public String getCategory(ArrayList<String> myRow) {
 		for (int i = 0; i < myRow.size(); i++) {
 			String columnValue = myRow.get(i);
-			String columnName = StringHelper.header[i];
+			String columnName = Lines2ObjectsFormatter.header[i];
 			String newCategory = getCategory(columnName, columnValue);
 			if (newCategory != null) {
 				return newCategory;
 			}
 		}
-		return "xxx";
+		return "---";
 	}
 
 }

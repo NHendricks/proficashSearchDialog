@@ -7,7 +7,7 @@ public class Payment implements Cloneable {
 	private String account;
 	private String date;
 	private String amount;
-	private String vz;
+	private String plusOrMinus;
 	private String type;
 
 	public String getType() {
@@ -49,12 +49,12 @@ public class Payment implements Cloneable {
 		this.amount = amount;
 	}
 
-	public String getVz() {
-		return vz;
+	public String getPlusOrMinus() {
+		return plusOrMinus;
 	}
 
-	public void setVz(String vz) {
-		this.vz = vz;
+	public void setPlusOrMinus(String plusOrMinus) {
+		this.plusOrMinus = plusOrMinus;
 	}
 
 	public String getToBank() {
@@ -109,7 +109,7 @@ public class Payment implements Cloneable {
 		ArrayList<String> myRow = new ArrayList<String>();
 		myRow.add(account);
 		myRow.add(date);
-		myRow.add(vz + amount);
+		myRow.add(plusOrMinus + amount);
 		myRow.add(type);
 		myRow.add(toBank);
 		myRow.add(toAccount);
@@ -125,7 +125,6 @@ public class Payment implements Cloneable {
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		// TODO Auto-generated method stub
 		return super.clone();
 	}
 

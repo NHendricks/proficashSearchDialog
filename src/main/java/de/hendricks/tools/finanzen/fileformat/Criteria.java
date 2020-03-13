@@ -1,4 +1,4 @@
-package de.hendricks.tools.finanzen;
+package de.hendricks.tools.finanzen.fileformat;
 
 import java.util.StringTokenizer;
 
@@ -7,15 +7,11 @@ public class Criteria {
 	private String substring = null;
 	private String category = null;
 
-	public Criteria(String definition) throws Exception {
+	public Criteria(String definition) {
 		StringTokenizer tok = new StringTokenizer(definition, "@");
-		if (tok.countTokens() != 3) {
-			throw new Exception("Invalid definition " + definition);
-		} else {
-			column = tok.nextToken();
-			substring = tok.nextToken();
-			category = tok.nextToken();
-		}
+		column = tok.nextToken();
+		substring = tok.nextToken();
+		category = tok.nextToken();
 	}
 
 	public String getCategory(String column, String value) {

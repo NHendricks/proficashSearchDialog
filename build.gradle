@@ -3,7 +3,7 @@ apply plugin: 'java'
 apply plugin: 'application'
 
 application {
-    mainClassName = 'de.hendricks.tools.finanzen.TabelleKonten'
+    mainClassName = 'de.hendricks.tools.finanzen.AccountFrame'
 }
 
 repositories {

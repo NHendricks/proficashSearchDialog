@@ -4,8 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,9 +18,11 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import de.hendricks.tools.finanzen.fileformat.Metadata;
+import de.hendricks.tools.finanzen.fileformat.Lines2ObjectsFormatter;
 import de.hendricks.tools.helper.FileHelper;
 
-public class TabelleKonten {
+public class AccountFrame {
 	static TableRowSorter<TableModel> sorter;
 
 	static int[] zeilenBreiten = new int[] { 140, 120, 120, 120, 120, 120, 320, 300, 200 };
@@ -37,16 +42,14 @@ public class TabelleKonten {
 				breiteInsgesamt = breiteInsgesamt + i;
 			}
 			// einlesen
-			ArrayList<Object> columnNamesList = StringHelper.readCsvHeader();
 			File baseFile = new File(args[0]);
-			String fileContent = FileHelper.readFile(baseFile, false, false);
-			ArrayList<Object[]> rowDataList = StringHelper.readCsv(fileContent, Metadata.getInstance(baseFile));
+			String fileContent = FileHelper.getAllLines(baseFile).stream().collect(Collectors.joining("\n"));
+			ArrayList<Object> columnNamesList = Lines2ObjectsFormatter.readCsvHeader();
+			ArrayList<Object[]> rowDataList = Lines2ObjectsFormatter.readAllLines(fileContent.toString(), Metadata.getInstance(baseFile));
 
-			// Spalten raus
 			columnNamesList = collectRowsSimple(columnNamesList, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 });
 			rowDataList = collectRows(rowDataList, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 });
 
-			// umformatieren
 			String[] columnNames = columnNamesList.toArray(new String[] {});
 			Object[][] rowData = rowDataList.toArray(new Object[][] {});
 

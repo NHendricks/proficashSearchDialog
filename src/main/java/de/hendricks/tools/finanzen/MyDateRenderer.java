@@ -6,9 +6,6 @@ import java.text.SimpleDateFormat;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class MyDateRenderer extends DefaultTableCellRenderer {
-	/**
-	* 
-	*/
 	private static final long serialVersionUID = 1L;
 	private Format formatter = new SimpleDateFormat("dd.MM.yyyy");
 
