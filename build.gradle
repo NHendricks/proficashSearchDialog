@@ -1,5 +1,10 @@
 apply plugin: 'eclipse'
 apply plugin: 'java'
+apply plugin: 'application'
+
+application {
+    mainClassName = 'de.hendricks.tools.finanzen.TabelleKonten'
+}
 
 repositories {
     mavenCentral()
