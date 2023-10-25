@@ -1,4 +1,4 @@
-package de.hendricks.tools.finanzen;
+package de.nhendricks.proficash;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -137,7 +137,9 @@ public class TableFilterPanel extends JPanel {
 		globalTextSearch2.getDocument().addDocumentListener(myDocumentListener);
 		
 		summeLabel = new JLabel(){
-		      public Point getToolTipLocation(MouseEvent event) {
+			private static final long serialVersionUID = 1L;
+
+			public Point getToolTipLocation(MouseEvent event) {
 		        return new Point(200, -20);
 		      }
 		    };
@@ -178,7 +180,7 @@ public class TableFilterPanel extends JPanel {
 			}
 			summe = summe + valueAt.doubleValue();
 		}
-		summeLabel.setText("Summe (" + nr + "):       " + String.format("%1.2f €    ", summe) + "(" + years2Sum.keySet().size() + " Jahre)");
+		summeLabel.setText("Summe (" + nr + "):       " + String.format("%1.2f EUR    ", summe) + "(" + years2Sum.keySet().size() + " Jahre)");
 		StringBuilder sb = new StringBuilder();
 		sb.append("<html>");
 		sb.append("<table boder=\"1\" cellpadding=\"0\">");
@@ -256,7 +258,7 @@ public class TableFilterPanel extends JPanel {
 
 			Date parsedVonDate = (Date) datumVonFilter.getModel().getValue();
 			if (parsedVonDate != null) {
-				// einen Tag abziehen, da wir einschließlich diesen Datums suchen wollen
+				// einen Tag abziehen, da wir einschlieï¿½lich diesen Datums suchen wollen
 				Date compareDate = new Date(parsedVonDate.getTime() - (long)1*1000*60*60*24 );
 				RowFilter<Object, Object> datumVonFilter = RowFilter.dateFilter(ComparisonType.AFTER, compareDate, 1);
 				filters.add(datumVonFilter);					

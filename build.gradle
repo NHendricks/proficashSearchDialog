@@ -1,9 +1,12 @@
-apply plugin: 'eclipse'
-apply plugin: 'java'
-apply plugin: 'application'
-
+plugins {
+  id 'com.github.johnrengelman.shadow' version '8.1.1'
+  id 'java'
+  id 'eclipse'
+  id 'application'
+}
+java.sourceCompatibility = JavaVersion.VERSION_1_8
 application {
-    mainClassName = 'de.hendricks.tools.finanzen.AccountFrame'
+    mainClassName = 'de.nhendricks.proficash.Main'
 }
 
 repositories {
@@ -12,5 +15,5 @@ repositories {
 
 dependencies {
 	// https://mvnrepository.com/artifact/net.sourceforge.jdatepicker/jdatepicker
-	compile group: 'net.sourceforge.jdatepicker', name: 'jdatepicker', version: '1.3.2'
+	implementation group: 'net.sourceforge.jdatepicker', name: 'jdatepicker', version: '1.3.2'
 }

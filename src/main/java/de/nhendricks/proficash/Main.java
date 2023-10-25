@@ -1,28 +1,30 @@
-package de.hendricks.tools.finanzen;
+package de.nhendricks.proficash;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import de.hendricks.tools.finanzen.fileformat.Metadata;
-import de.hendricks.tools.finanzen.fileformat.Lines2ObjectsFormatter;
-import de.hendricks.tools.helper.FileHelper;
+import de.nhendricks.proficash.fileformat.Lines2ObjectsFormatter;
+import de.nhendricks.proficash.fileformat.Metadata;
+import de.nhendricks.proficash.helper.FileHelper;
+import de.nhendricks.proficash.renderer.MyDateRenderer;
 
-public class AccountFrame {
+public class Main {
 	static TableRowSorter<TableModel> sorter;
 
 	static int[] zeilenBreiten = new int[] { 140, 120, 120, 120, 120, 120, 320, 300, 200 };
@@ -31,10 +33,9 @@ public class AccountFrame {
 
 	public static void main(String[] args) {
 		if (args.length != 1) {
-			System.out.println("Usage TabelleKonten file.csv 2010 2011 [-Dfilter=xxx]");
-			System.out.println("file.csv = export aus proficash (Datei - Ausführen Export - Umsätze und Salden - feste Satzlänge 768)");
-			System.out.println("file.criteria = Datei mit Kategorien je Zeile ein Filter. z.B. Empfänger@DANKE IHR KOELLE-ZOO MS@Tiere oder VWZ@ERDGAS ABSCHLAG@Haus.SWGAS");
-			System.out.println("file.");
+			System.out.println("Usage  <file>");
+			System.out.println("file = exported file from proficash (\"feste SatzlÃ¤nge 768\")");
+			System.out.println("file.criteria = File with categories to be automatically added (see example files in the git repository)");
 			System.exit(-1);
 		}
 		try {
@@ -44,7 +45,7 @@ public class AccountFrame {
 			// einlesen
 			File baseFile = new File(args[0]);
 			String fileContent = FileHelper.getAllLines(baseFile).stream().collect(Collectors.joining("\n"));
-			ArrayList<Object> columnNamesList = Lines2ObjectsFormatter.readCsvHeader();
+			ArrayList<Object> columnNamesList = Lines2ObjectsFormatter.getHeaders();
 			ArrayList<Object[]> rowDataList = Lines2ObjectsFormatter.readAllLines(fileContent.toString(), Metadata.getInstance(baseFile));
 
 			columnNamesList = collectRowsSimple(columnNamesList, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 });
@@ -54,12 +55,15 @@ public class AccountFrame {
 			Object[][] rowData = rowDataList.toArray(new Object[][] {});
 
 			JFrame f = new JFrame();
-			f.setTitle("Umsatzfilter");
+			f.setTitle("ProficashSearchDialog");
 			// f.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
 			f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 			JPanel hauptPanel = new JPanel();
 			hauptPanel.setLayout(new BorderLayout());
+			Border border = hauptPanel.getBorder();
+			Border margin = new LineBorder(Color.gray,4);
+			hauptPanel.setBorder(new CompoundBorder(border, margin));
 			f.getContentPane().add(hauptPanel);
 
 			JTable table = new PaymentTable(rowData, columnNames);
@@ -70,6 +74,7 @@ public class AccountFrame {
 			hauptPanel.add(tablePanel, BorderLayout.CENTER);
 
 			f.pack();
+			f.setExtendedState(f.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 			f.setVisible(true);
 		} catch (IOException e) {
 			e.printStackTrace();

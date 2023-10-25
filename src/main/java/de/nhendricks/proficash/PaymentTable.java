@@ -1,4 +1,4 @@
-package de.hendricks.tools.finanzen;
+package de.nhendricks.proficash;
 
 import javax.swing.JTable;
 

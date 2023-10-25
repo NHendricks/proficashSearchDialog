@@ -1,4 +1,4 @@
-package de.hendricks.tools.finanzen;
+package de.nhendricks.proficash;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

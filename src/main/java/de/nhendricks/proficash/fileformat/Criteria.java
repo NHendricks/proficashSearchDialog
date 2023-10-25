@@ -1,4 +1,4 @@
-package de.hendricks.tools.finanzen.fileformat;
+package de.nhendricks.proficash.fileformat;
 
 import java.util.StringTokenizer;
 

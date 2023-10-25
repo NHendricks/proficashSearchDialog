@@ -1,4 +1,4 @@
-package de.hendricks.tools.helper;
+package de.nhendricks.proficash.helper;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +11,7 @@ public class FileHelper {
 	
 	public static ArrayList<String> getAllLines(File file) throws IOException {
 		ArrayList<String> retval = new ArrayList<String>();
-		Stream<String> stream = Files.lines(file.toPath(), Charset.forName("ISO8859-1"));
+		Stream<String> stream = Files.lines(file.toPath(), Charset.forName("Cp850"));
 		stream.forEach(line -> {
 			retval.add(line);
 		});

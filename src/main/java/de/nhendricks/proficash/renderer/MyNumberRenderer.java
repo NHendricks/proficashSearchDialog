@@ -1,13 +1,16 @@
-package de.hendricks.tools.finanzen;
+package de.nhendricks.proficash.renderer;
 
 import java.text.Format;
-import java.text.SimpleDateFormat;
+import java.text.NumberFormat;
 
 import javax.swing.table.DefaultTableCellRenderer;
 
-public class MyDateRenderer extends DefaultTableCellRenderer {
+public class MyNumberRenderer extends DefaultTableCellRenderer {
+	/**
+	* 
+	*/
 	private static final long serialVersionUID = 1L;
-	private Format formatter = new SimpleDateFormat("dd.MM.yyyy");
+	private Format formatter = NumberFormat.getInstance();
 
 	public void setValue(Object value) {
 		try {

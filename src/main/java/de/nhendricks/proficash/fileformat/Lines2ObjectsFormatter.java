@@ -1,4 +1,4 @@
-package de.hendricks.tools.finanzen.fileformat;
+package de.nhendricks.proficash.fileformat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
-import de.hendricks.tools.finanzen.Payment;
+import de.nhendricks.proficash.Payment;
 
 public class Lines2ObjectsFormatter {
 
@@ -30,7 +30,7 @@ public class Lines2ObjectsFormatter {
 			String amount = line.substring(45, 57);
 			String plusOrMinus = line.substring(57, 58);
 			if ("R".equals(plusOrMinus)) {
-				// bei sparkassen-Umsätzen aus älterer Zeit komischerweise
+				// bei sparkassen-Umsï¿½tzen aus ï¿½lterer Zeit komischerweise
 				plusOrMinus = line.substring(58, 59);
 			}
 			String type = line.substring(82, 109);
@@ -84,14 +84,14 @@ public class Lines2ObjectsFormatter {
 				}
 				sum = sum.add(amountBd);
 				sums.put(subPayment.getCategory(), sum);
-				// Sonderlocke nur xxx-Umsätze anzeigen
+				// Sonderlocke nur xxx-Umsï¿½tze anzeigen
 				if (filter == null || filter != null && filter.equals(subPayment.getCategory())) {
 					Object[] thisRowDataAsObjects = format2DateOrNumberObjectIfNeeded(
 							subPayment.getRow().toArray(new String[] {}));
 
 					myList.add(thisRowDataAsObjects);
 				}
-				// zusätzlich zur ober-Kategorie summieren
+				// zusï¿½tzlich zur ober-Kategorie summieren
 				if (subPayment.getCategory().indexOf(".") != -1) {
 					String parentCategory = subPayment.getCategory().substring(0,
 							subPayment.getCategory().indexOf("."));
@@ -204,10 +204,10 @@ public class Lines2ObjectsFormatter {
 		return payments;
 	}
 
-	public static String[] header = new String[] { "Konto", "Datum", "Betrag", "Typ", "BLZ", "Konto", "Empfänger",
+	public static String[] header = new String[] { "Konto", "Datum", "Betrag", "Typ", "BLZ", "Konto", "Empfaenger",
 			"VWZ", "Kategorie" };
 
-	public static ArrayList<Object> readCsvHeader() throws IOException {
+	public static ArrayList<Object> getHeaders() throws IOException {
 		ArrayList<Object> myList = new ArrayList<Object>();
 		myList.add(header[0]);
 		myList.add(header[1]);

@@ -1,15 +1,13 @@
-package de.hendricks.tools.finanzen.fileformat;
+package de.nhendricks.proficash.fileformat;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import de.hendricks.tools.helper.FileHelper;
+import de.nhendricks.proficash.helper.FileHelper;
 
 public class Metadata {
 
