@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 import javax.swing.JFrame;
@@ -25,7 +27,6 @@ import de.nhendricks.proficash.helper.FileHelper;
 import de.nhendricks.proficash.renderer.MyDateRenderer;
 
 public class Main {
-	static TableRowSorter<TableModel> sorter;
 
 	static int[] zeilenBreiten = new int[] { 140, 120, 120, 120, 120, 120, 320, 300, 200 };
 
@@ -69,6 +70,21 @@ public class Main {
 			JTable table = new PaymentTable(rowData, columnNames);
 			table.getColumnModel().getColumn(1).setCellRenderer(new MyDateRenderer());
 			JPanel tablePanel = createTablePanel(table);
+			TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
+			sorter.setComparator(1, new Comparator<Date>() {
+			    @Override
+			    public int compare(Date date1, Date date2) {
+			    	int retval = 0;
+			    	if (date2.after(date1)) {
+			    		retval = -1;
+			    	} else if (date2.before(date1)) {
+			    		retval = 1;
+			    	}
+			        return retval;
+			    }
+			});
+			table.setRowSorter(sorter);
+
 			tablePanel.add(new TableFilterPanel(table, sorter), BorderLayout.NORTH);
 			tablePanel.setPreferredSize(new Dimension(breiteInsgesamt + 100, 800));
 			hauptPanel.add(tablePanel, BorderLayout.CENTER);
@@ -87,7 +103,6 @@ public class Main {
 		JScrollPane jsp = new JScrollPane(table);
 		tablePanel.add(jsp, BorderLayout.CENTER);
 
-		sorter = new TableRowSorter<TableModel>(table.getModel());
 		TableColumnModel cm = table.getColumnModel();
 		cm.getColumn(0).setPreferredWidth(zeilenBreiten[0]);
 		cm.getColumn(1).setPreferredWidth(zeilenBreiten[1]);
@@ -98,7 +113,6 @@ public class Main {
 		cm.getColumn(6).setPreferredWidth(zeilenBreiten[6]);
 		cm.getColumn(7).setPreferredWidth(zeilenBreiten[7]);
 		cm.getColumn(8).setPreferredWidth(zeilenBreiten[8]);
-		table.setRowSorter(sorter);
 		return tablePanel;
 	}
 
